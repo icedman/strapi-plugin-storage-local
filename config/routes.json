@@ -1,0 +1,39 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/",
+      "handler": "Storage.index",
+      "config": {
+        "policies": []
+      }
+    },
+
+    {
+      "method": "POST",
+      "path": "/",
+      "handler": "Storage.upload",
+      "config": {
+        "policies": []
+      }
+    },
+
+    {
+      "method": "PUT",
+      "path": "/",
+      "handler": "Storage.move",
+      "config": {
+        "policies": []
+      }
+    },
+
+    {
+      "method": "DELETE",
+      "path": "/",
+      "handler": "Storage.remove",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}
