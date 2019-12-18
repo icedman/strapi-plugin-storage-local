@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const exec = require('child_process').exec;
+const uuid = require('uuid/v4');
 
 // move this to config
 const rootDir = __dirname + '../../../../../files'; // just outside project root folder
@@ -57,9 +58,7 @@ module.exports = {
           message: 'ok'
         });
     } else {
-        console.log('upload');
-
-        const files = ctx.request.body.files;
+        const files = ctx.request.files;
         const file = files.file;
         let name = file.name;
 
@@ -72,10 +71,23 @@ module.exports = {
             // console.log(stderr);
         });
 
+        const res = await strapi.plugins['upload'].services.upload.add({
+          provider: 'local-storage',
+          size: file.size,
+          hash: uuid().replace(/-/g, ''),
+          mime: file.type,
+          url: p,
+          path: p,
+          name: name
+        });
+
         // assume it works!
         ctx.send({
           message: 'ok',
-          path: reqPath
+          file: {
+            ...res,
+            path: reqPath
+          }
         });
         return;
     }
