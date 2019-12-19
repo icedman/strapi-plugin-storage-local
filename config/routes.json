@@ -8,7 +8,14 @@
         "policies": []
       }
     },
-
+    {
+      "method": "GET",
+      "path": "/:id",
+      "handler": "Storage.index",
+      "config": {
+        "policies": []
+      }
+    },
     {
       "method": "POST",
       "path": "/",

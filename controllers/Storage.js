@@ -28,13 +28,21 @@ module.exports = {
 
     let query = ctx.query || {};
     let reqPath = query['path'] || '';
-    let p = path.join(rootDir, reqPath);
+    let p = '';
+
+    if (ctx.params.id) {
+      let file = await strapi.query('file', 'upload').findOne({
+        id: ctx.params.id,
+      });
+      p = path.join(rootDir, file.name);
+      // console.log(file);
+    } else {
+      p = path.join(rootDir, reqPath);
+    }
 
     if (!fm.exists(p)) {
       return ctx.send('file not found: ' + p);
     }
-
-    // console.log(p);
 
     const data = fs.readFileSync(p);
 
@@ -76,9 +84,8 @@ module.exports = {
           size: file.size,
           hash: uuid().replace(/-/g, ''),
           mime: file.type,
-          url: p,
-          path: p,
-          name: name
+          url: '/storage?path=' + reqPath,
+          name: reqPath
         });
 
         // assume it works!
